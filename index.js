@@ -17,7 +17,7 @@ io.on('connection', (socket) => {
         if (!CONNECTED_USERS[socket.id]) {
             CONNECTED_USERS[socket.id] = data;
         }
-        io.emit('user_connected', data);
+        io.emit('user_connected', { id: socket.id, ...data });
         console.log(CONNECTED_USERS)
     });
 
@@ -26,7 +26,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on("disconnect", () => {
-        io.emit('user_disconnected', CONNECTED_USERS[socket.id]);
+        io.emit('user_disconnected', { id: CONNECTED_USERS[socket.id], ...CONNECTED_USERS[socket.id] });
         if (CONNECTED_USERS[socket.id]) {
             delete CONNECTED_USERS[socket.id];
         }
